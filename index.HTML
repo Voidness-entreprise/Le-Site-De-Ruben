@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les services de Ruben</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+
+    <div id="ruben-app-wrapper">
+        <header class="header">
+            <nav class="nav container">
+                <a href="#" class="logo" onclick="showPage('home')">Les services de Ruben</a>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="showPage('home')">Accueil</a></li>
+                    <li><a href="#" onclick="showPage('services')">Services</a></li>
+                    <li><a href="#" onclick="showPage('booking')">Réserver</a></li>
+                    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+                    <li id="auth-link"><a href="#" onclick="showPage('login')">Connexion</a></li>
+                    <li id="profile-link" class="hidden"><a href="#" onclick="showPage('profile')">Mon Profil</a></li>
+                    <li id="logout-link" class="hidden"><a href="#" onclick="logout()">Déconnexion</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="main">
+            <div id="home" class="page active">
+                <section class="hero">
+                    <div class="container">
+                        <h1>Les Services Professionnels de Ruben à Domicile</h1>
+                        <p>Réservez facilement vos services préférés en quelques clics</p>
+                        <a href="#" class="btn" onclick="showPage('services')">Découvrir nos services</a>
+                    </div>
+                </section>
+
+                <section class="container">
+                    <div class="services-grid" id="home-services">
+                        </div>
+                </section>
+            </div>
+
+            <div id="services" class="page">
+                <div class="container">
+                    <h2 style="color: white; text-align: center; margin-bottom: 2rem;">Nos Services</h2>
+                    <div class="services-grid" id="all-services">
+                        </div>
+                </div>
+            </div>
+
+            <div id="booking" class="page">
+                <div class="container">
+                    <div class="form-container">
+                        <h2>Réserver un service</h2>
+                        <form id="booking-form">
+                            <p style="color: var(--danger); margin-bottom: 1rem;">**Note : Cette réservation est simulée. Pour une vraie réservation, un backend est nécessaire.**</p>
+                            <div class="form-group">
+                                <label for="service-select">Service</label>
+                                <select id="service-select" required onchange="updateBookingOptions()">
+                                    <option value="">Sélectionner un service</option>
+                                </select>
+                            </div>
+
+                            <div id="service-options-section" class="hidden">
+                                <h3>Options du Service</h3>
+                                <div id="service-options-content">
+                                    </div>
+                                <p style="font-weight: bold; margin-top: 1rem;">Prix de base du service : <span id="base-service-price">0€</span></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="booking-date">Date</label>
+                                <input type="date" id="booking-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-time">Heure</label>
+                                <select id="booking-time" required>
+                                    <option value="">Sélectionner une heure</option>
+                                    </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="booking-address">Adresse</label>
+                                <textarea id="booking-address" rows="3" required placeholder="Votre adresse complète"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="booking-city">Ville</label>
+                                <input type="text" id="booking-city" required oninput="calculateDeliveryCost()">
+                            </div>
+
+                            <p style="font-weight: bold; margin-top: 1rem;">Frais de livraison estimés : <span id="delivery-cost">0€</span></p>
+                            <p style="font-size: 1.3rem; font-weight: bold; margin-top: 1.5rem; color: var(--secondary);">Total estimé : <span id="total-estimated-price">0€</span> <small>(Ce prix est une estimation basée sur le prix minimum du service et les options sélectionnées. Le prix final pourra varier dans la plage indiquée et sera confirmé après validation de la réservation.)</small></p>
+                            
+                            <div class="form-group">
+                                <label for="booking-notes">Notes spéciales</label>
+                                <textarea id="booking-notes" rows="3" placeholder="Informations complémentaires (optionnel)"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn">Confirmer la réservation (Simulée)</button>
+                            <button type="button" class="btn btn-secondary" onclick="showNotification('Le paiement en ligne sera disponible prochainement !', 'warning')">Payer en ligne (À venir)</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="login" class="page">
+                <div class="container">
+                    <div class="form-container">
+                        <h2>Connexion</h2>
+                        <p style="color: var(--danger); margin-bottom: 1rem;">**Note : La connexion est simulée et ne se connecte pas à un compte réel.**</p>
+                        <form id="login-form">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Mot de passe</label>
+                                <input type="password" id="password" required>
+                            </div>
+                            <button type="submit" class="btn">Se connecter (Simulé)</button>
+                            <p style="margin-top: 1rem; text-align: center;">
+                                Pas de compte ? <a href="#" onclick="showPage('register')" style="color: var(--primary);">Créer un compte</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="register" class="page">
+                <div class="container">
+                    <div class="form-container">
+                        <h2>Créer un compte</h2>
+                        <p style="color: var(--danger); margin-bottom: 1rem;">**Note : La création de compte est simulée et ne crée pas d'utilisateur réel.**</p>
+                        <form id="register-form">
+                            <div class="form-group">
+                                <label for="reg-name">Nom complet</label>
+                                <input type="text" id="reg-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">Email</label>
+                                <input type="email" id="reg-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-phone">Téléphone</label>
+                                <input type="tel" id="reg-phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password">Mot de passe</label>
+                                <input type="password" id="reg-password" required minlength="8">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-confirm">Confirmer le mot de passe</label>
+                                <input type="password" id="reg-confirm" required>
+                            </div>
+                            <button type="submit" class="btn">Créer le compte (Simulé)</button>
+                            <p style="margin-top: 1rem; text-align: center;">
+                                Déjà un compte ? <a href="#" onclick="showPage('login')" style="color: var(--primary);">Se connecter</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profile" class="page">
+                <div class="container">
+                    <div class="user-profile">
+                        <div class="profile-header">
+                            <div class="profile-avatar" id="profile-avatar">U</div>
+                            <div>
+                                <h2 id="profile-name">Utilisateur</h2>
+                                <p id="profile-email">user@example.com</p>
+                            </div>
+                        </div>
+                        
+                        <h3>Mes réservations</h3>
+                        <div class="bookings-list" id="user-bookings">
+                            </div>
+
+                        <div class="message-box">
+                            <h4>Messagerie avec le Support (Simulation)</h4>
+                            <div class="message-list" id="user-messages">
+                                </div>
+                            <form id="send-message-form">
+                                <div class="form-group">
+                                    <label for="message-input">Envoyer un message</label>
+                                    <textarea id="message-input" rows="3" placeholder="Tapez votre message ici..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn">Envoyer (Simulé)</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="contact" class="page">
+                <div class="container">
+                    <div class="form-container">
+                        <h2>Nous contacter</h2>
+                        <p style="color: var(--danger); margin-bottom: 1rem;">**Note : Ce formulaire de contact est simulé. Les messages ne sont pas envoyés sans un backend.**</p>
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="contact-name">Nom</label>
+                                <input type="text" id="contact-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email">Email</label>
+                                <input type="email" id="contact-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-subject">Sujet</label>
+                                <input type="text" id="contact-subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-message">Message</label>
+                                <textarea id="contact-message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Envoyer le message (Simulé)</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div> 
+    
+    <div id="notification" class="notification"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
